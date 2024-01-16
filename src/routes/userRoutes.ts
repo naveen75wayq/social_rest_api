@@ -41,6 +41,8 @@ router.delete('/users/:userId',authenticateToken,async (req:Request, res:Respons
         else{
             
         }
+    }catch(err){
+        
     }
 })
 export default router
