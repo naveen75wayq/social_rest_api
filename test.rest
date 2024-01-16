@@ -1,0 +1,25 @@
+### 
+
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+   "username": "naven",
+   "email": "nknthakur@gmail.com",
+   "password": "prrass!234"
+}
+###
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+   "email": "nknthakur@gmail.com",
+   "password": "prrass!234"
+}
+
+###
+GET http://localhost:3000/users
+Content-Type: application/json
+
+### 
+GET http://localhost:3000/users/65a653d014c108660b15fa82
