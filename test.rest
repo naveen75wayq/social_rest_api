@@ -22,4 +22,11 @@ GET http://localhost:3000/users
 Content-Type: application/json
 
 ### 
-GET http://localhost:3000/users/65a653d014c108660b15fa82
+GET http://localhost:3000/users/65a665ead5951b93fdc84136
+Content-Type: application/json
+Authorization: Bearer 
+
+###
+DELETE http://localhost:3000/users/{id}
+Content-Type: application/json
+Authorization: Bearer

@@ -4,38 +4,37 @@ import User from '../entities/user'; // Update the path based on your actual fil
 import jwt from 'jsonwebtoken'
 import { JWT_KEY } from '../loadEnvironment';
 export async function signIn(req: Request, res: Response) {
-    try {
-      const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-      // Validate user input
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
-      }
-
-      // Find the user by email
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-      }
-
-      // Compare the provided password with the stored hashed password
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      if (isPasswordValid) {
-        // Successfully signed in
-        res.status(200).json({ message: 'Sign-in successful', user });
-      } else {
-        // Authentication failed
-        res.status(401).json({ error: 'Invalid credentials' });
-      }
-      const token = jwt.sign({id:user._id, username:user.username},JWT_KEY as string)
-      res.status(200).json({token})
-    } catch (error) {
-      console.error('Error during sign-in:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    // Validate user input
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
     }
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Compare the provided password with the stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
+      // Successfully signed in
+      const token = jwt.sign({ id: user._id, username: user.username }, JWT_KEY as string);
+      res.status(200).json({ message: 'Sign-in successful', user, token });
+    } else {
+      // Authentication failed
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  } catch (error) {
+    console.error('Error during sign-in:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
+}
 
 
   export async function signUp(req: Request, res: Response) {

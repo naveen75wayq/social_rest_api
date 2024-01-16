@@ -23,4 +23,28 @@ async function getUserById(userid:any){
     throw new Error("INTERNAL SEVER ERROR")
   }
 }
-export {getAllUsers, getUserById}
+
+ async function deleteUserById(userId:any) {
+  try {
+    // Check if userId is a valid ObjectId
+    if (!isValidObjectId(userId)) {
+      console.log('Invalid userId format')
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId).exec();
+
+    if (!deletedUser) {
+     console.log('User not found')
+    }
+
+   console.log(`User deleted successfully : ${deletedUser}`)
+  } catch (error) {
+    console.error('Error deleting user:', error);
+  }
+}
+
+// Add this function to validate ObjectId format
+function isValidObjectId(id: string): boolean {
+  return /^[0-9a-fA-F]{24}$/.test(id);
+}
+export {getAllUsers, getUserById, deleteUserById}
