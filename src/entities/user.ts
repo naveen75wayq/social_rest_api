@@ -1,7 +1,12 @@
 import mongoose, { Schema, model } from 'mongoose';
 
-
-const userSchema = new Schema({
+export interface UserDocument extends Document {
+  username: string;
+  email: string;
+  password: string;
+  posts: Schema.Types.ObjectId[]; // Assuming posts contain MongoDB ObjectIds
+}
+const userSchema = new Schema<UserDocument>({
   username: {
     type: String,
     required: true,
@@ -24,6 +29,6 @@ const userSchema = new Schema({
 
 });
 
-const User = model('User', userSchema);
+const User = model<UserDocument>('User', userSchema);
 
 export default User;

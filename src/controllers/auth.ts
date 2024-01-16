@@ -46,7 +46,8 @@ export async function signIn(req: Request, res: Response) {
       }
 
       // Check if the email is already in use
-    const existingUsername = await User.findOne({username}).exec();
+    const existingUsername = await User.findOne({email}).exec();
+    console.log(existingUsername);
        if(existingUsername) {
         return res.status(409).json({ error: 'Email is already in use' });
       } 

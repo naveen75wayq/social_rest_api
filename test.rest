@@ -4,9 +4,9 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-   "username": "naven",
+   "username": "sadhio",
    "email": "nknthakur@gmail.com",
-   "password": "prrass!234"
+   "password": "Reoot0123#"
 }
 ###
 POST http://localhost:3000/auth/signin
@@ -14,7 +14,7 @@ Content-Type: application/json
 
 {
    "email": "nknthakur@gmail.com",
-   "password": "prrass!234"
+   "password": "prras!23"
 }
 
 ###
@@ -22,11 +22,23 @@ GET http://localhost:3000/users
 Content-Type: application/json
 
 ### 
-GET http://localhost:3000/users/65a665ead5951b93fdc84136
+GET http://localhost:3000/users/65a6b427b77a50c5606de305
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZiNDI3Yjc3YTUwYzU2MDZkZTMwNSIsInVzZXJuYW1lIjoibmF2ZWVuIiwiaWF0IjoxNzA1NDIzOTIzfQ.Vr3Lu_5jcwYySOLzYvWYCT_jQmo2zWJ9VFsb-7qokjM
 
 ###
-DELETE http://localhost:3000/users/{id}
+DELETE http://localhost:3000/users/65a6b427b77a50c5606de305
 Content-Type: application/json
-Authorization: Bearer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZiNDI3Yjc3YTUwYzU2MDZkZTMwNSIsInVzZXJuYW1lIjoibmF2ZWVuIiwiaWF0IjoxNzA1NDIzOTIzfQ.Vr3Lu_5jcwYySOLzYvWYCT_jQmo2zWJ9VFsb-7qokjM
+
+###
+PUT  http://localhost:3000/users/65a6bf0836e533444d9b4692
+Content-Type: application/json
+Authorization: Bear eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZiZjA4MzZlNTMzNDQ0ZDliNDY5MiIsInVzZXJuYW1lIjoibmF2ZWVuIiwiaWF0IjoxNzA1NDI3Mjc1fQ.40B-uNWwaeGm_AA--aEexwG-1f4SySpeci0Q13H0cFk
+
+{
+   "username": "eaenb",
+   "email": "nknthakur@gmail.com",
+   "password": "prras!23"
+
+}

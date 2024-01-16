@@ -1,50 +1,90 @@
-// userController.ts
-import User from '../entities/user'; // Update the path based on your actual file structure
 
- async function getAllUsers() {
+import { NextFunction,Request,Response } from 'express';
+
+import { deleteUserById, getAllUsers, getUserById, /* patchUserById, updateUserById */ } from '../services/userServices';
+import User, { UserDocument } from '../entities/user';
+import Result from '../interfaces/resultInterfaces';
+import bcrypt from 'bcrypt';
+
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await User.find().exec();
-    return users;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    throw new Error("INTERNAL SEVER ERROR")
-  }
-}
+    const { userId } = req.params;
+    const result = await deleteUserById(userId);
 
-async function getUserById(userid:any){
+    if (!result.success) {
+      return res.status(404).json({ error: 'User not found', message: result.message });
+    }
+
+    res.status(200).json({ message: result.message, deletedUser: result.deletedUser });
+    next();
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong while deleting the user' });
+  }
+};
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const result = await getAllUsers();
+
+    if (!result.success) {
+      return res.status(500).json({ error: 'Internal Server Error', message: 'Error fetching users' });
+    }
+
+    res.status(200).json({ message: result.message, users: result.users });
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong while fetching users' });
+  }
+};
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await getUserById(userId);
+
+    if (!result.success) {
+      return res.status(404).json({ error: 'User not found', message: result.message });
+    }
+
+    res.status(200).json({ message: result.message, user: result.user });
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong while fetching the user' });
+  }
+};
+/* export const updateUser = async(req:Request, res:Response, next:NextFunction) => {
   try{
-    const user = await User.findById(userid).exec();
-    if(user){
-      return user;
-    }
+    const {userId} = req.params;
+    const userdata = req.body;
+    const hashedPassword = await bcrypt.hash(userdata.password, 10);
+    console.log(userdata);
+    const newUser = await User.create({
+      ...userdata,
+      password: hashedPassword,
+    })
+    console.log(newUser);
+    const result: Result<UserDocument | null> = await updateUserById(userId, userdata);
     
+    if(!result.success){
+      res.status(404).json({error:'User not found',message: result.message});
+    }
+    res.status(200).json({message: result.message, data: result.data});
   }catch(error){
-    console.error('Error fetching user:', error);
-    throw new Error("INTERNAL SEVER ERROR")
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong while updating the user' });
   }
-}
-
- async function deleteUserById(userId:any) {
-  try {
-    // Check if userId is a valid ObjectId
-    if (!isValidObjectId(userId)) {
-      console.log('Invalid userId format')
+};
+export const patchUser = async(req:Request, res:Response, next:NextFunction) => {
+  try{
+    const {userId} = req.params;
+    const userdata = req.body;
+    const result = await patchUserById(userId, userdata);
+    if(!result.success){
+      res.status(404).json({error:'User not found',message: result.message});
     }
-
-    const deletedUser = await User.findByIdAndDelete(userId).exec();
-
-    if (!deletedUser) {
-     console.log('User not found')
-    }
-
-   console.log(`User deleted successfully : ${deletedUser}`)
-  } catch (error) {
-    console.error('Error deleting user:', error);
+    res.status(200).json({message: result.message, data: result.data});
+  }catch(error){
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong while updating the user' });
   }
-}
-
-// Add this function to validate ObjectId format
-function isValidObjectId(id: string): boolean {
-  return /^[0-9a-fA-F]{24}$/.test(id);
-}
-export {getAllUsers, getUserById, deleteUserById}
+};
+ */

@@ -1,20 +1,14 @@
- import express, { Request, Response } from 'express';
+ import express from 'express';
 import userRouter from '../src/routes/userRoutes'
 import bodyParser from 'body-parser'
 import authRouter from './routes/authRoute';
 import { connectToDb } from './server/db';
-
-
-
-// import Database from './server/db';
-// import connectToDatabase from './server/db';
-// import run from './server/db';
 const app = express();
 const port = 3000;
 app.use(bodyParser.json({limit: "30mb"}))
 app.use(bodyParser.urlencoded({limit:"30mb", extended: true}))
-app.use('/auth', authRouter)
 
+app.use('/auth', authRouter)
 app.use('/',userRouter)
 
 app.listen(port, async () => {
